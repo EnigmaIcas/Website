@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma - Home</title>
+    <link rel="stylesheet" href="static/css/home.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Enigma</div>
+            <ul class="nav-links">
+                <li><a href="#">About Icas</a></li>
+                <li><a href="#">Alumni</a></li>
+                <li><a href="#">Universities</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">GPA Calculator</a></li>
+            </ul>
+            <div class="buttons">
+                <a href="{{ url_for('register') }}" class="login-btn">Login</a>
+                <a href="#" class="get-started-btn">Get started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Enigma</h1>
+                <p>Your gateway to educational excellence and community.</p>
+                <a href="#" class="cta-button">Learn More</a>
+            </div>
+        </section>
+
+        <section class="about-enigma">
+            <h2>About Enigma</h2>
+            <p>Enigma is dedicated to providing exceptional educational services and resources for students, alumni, and educational institutions. Our mission is to foster growth, learning, and success in the academic community.</p>
+            <div class="icon-container">
+                <div class="icon">
+                    <img src="division1.png" alt="Division 1 Icon">
+                    <p>Division 1</p>
+                </div>
+                <div class="icon">
+                    <img src="division2.png" alt="Division 2 Icon">
+                    <p>Division 2</p>
+                </div>
+                <div class="icon">
+                    <img src="division3.png" alt="Division 3 Icon">
+                    <p>Division 3</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Enigma. All rights reserved.</p>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

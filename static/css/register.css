@@ -1,0 +1,398 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1c1b29;
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #2b2b3d;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h1{
+    font-family: 'cursive';font-size: 22px;
+}
+
+.left-section {
+    position: relative;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    overflow: hidden;
+    border-top-left-radius: 20px; 
+}
+
+.flowing-text-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.flowing-text {
+    display: inline-block;
+    animation: scroll 15s linear infinite;
+    color: white;
+    font-size: 16px;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.back-btn {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.back-btn i {
+    margin-right: 5px;
+}
+
+.back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.right-section {
+    width: 50%;
+    padding: 60px 40px;
+    background-color: #383a59;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+    color: white;
+    animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: white;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+p {
+    font-size: 14px;
+    color: #c5c5da;
+    margin-bottom: 30px;
+}
+
+a {
+    color: #a38fff;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
+.input-group {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #47496f;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+input::placeholder {
+    color: #d0cfe3;
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid #a38fff;
+    background-color: #5a5a7f;
+}
+
+.spacing {
+    height: 15px;
+}
+
+hr.divider {
+    border: none;
+    border-top: 1px solid #a38fff;
+    margin: 0;
+}
+
+.line-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.line {
+    flex: 1;
+    border: none;
+    height: 1px;
+    background-color: #a38fff;
+    margin: 0 10px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    transition: transform 0.2s;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    transform: scale(1.2);
+}
+
+button.create-account-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #a38fff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+button.create-account-btn:hover {
+    background-color: #927de0;
+    transform: scale(1.05);
+}
+
+.or-text {
+    text-align: center;
+    font-size: 14px;
+    color: #b4b4d0;
+    margin: 0 10px;
+}
+
+.social-login {
+    display: flex;
+    gap: 15px;
+}
+
+button.google-btn,
+button.apple-btn {
+    flex: 1;
+    padding: 12px;
+    background-color: #4c4d75;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+button.google-btn img,
+button.apple-btn img {
+    width: 20px;
+}
+
+button.google-btn:hover,
+button.apple-btn:hover {
+    background-color: #5b5c84;
+}
+
+.checkbox-group {
+    margin-top: 20px;
+}
+
+p + .spacing {
+    margin-top: -100px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+        overflow: visible;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .left-section {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .right-section {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .logo-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .back-btn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .form-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h1 {
+        padding-top: 20px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    button.create-account-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    button.google-btn, button.apple-btn {
+        font-size: 12px;
+        padding: 8px;
+    }
+}

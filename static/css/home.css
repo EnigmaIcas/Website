@@ -1,0 +1,195 @@
+:root {
+    --primary-color: #00b75d;
+    --hover-color: #01974d;
+    --dark-color: #333;
+    --light-color: #f5f9f6;
+    --text-color: #2c2c2c;
+    --bg-color: #fff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: var(--text-color);
+    background-color: var(--light-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--bg-color);
+    padding: 15px 40px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--dark-color);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+    color: var(--primary-color);
+}
+
+.buttons a {
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 25px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.login-btn {
+    background-color: var(--dark-color);
+    margin-right: 15px;
+}
+
+.get-started-btn {
+    background-color: var(--primary-color);
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #e6ffe5, #d4ffd2);
+    padding: 60px 40px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.hero-content p {
+    margin-bottom: 25px;
+    font-size: 1.2em;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.cta-button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+}
+
+.about-enigma {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.about-enigma h2 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.about-enigma p {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1em;
+    color: var(--dark-color);
+}
+
+.icon-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.icon {
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.05);
+}
+
+.icon img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.footer {
+    background-color: var(--bg-color);
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+    box-shadow: 0 -4px 12px var(--shadow-color);
+}
+
+.footer-content p {
+    color: var(--dark-color);
+}
+
+@media (max-width: 768px) {
+    .icon-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .icon {
+        margin: 10px 0;
+    }
+
+    .hero-content h1 {
+        font-size: 2em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .about-enigma h2 {
+        font-size: 2em;
+    }
+}
