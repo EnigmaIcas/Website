@@ -396,3 +396,43 @@ p + .spacing {
         padding: 8px;
     }
 }
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: #00ff00;
+}
+
+.alert-error {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff0000;
+}
+
+.alert-info {
+    background-color: rgba(0, 0, 255, 0.1);
+    color: #0000ff;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.forgot-password a {
+    color: #a38fff;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+#login-form, #register-form {
+    transition: all 0.3s ease;
+}
