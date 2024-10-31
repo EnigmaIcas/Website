@@ -9,7 +9,7 @@ Prerequisites:
 Installation Steps:
 ------------------
 1. Make sure you are in Correct directory:
-   >cd Website-main
+   >cd Website-main   <br />
    >Eg  It should look like this: C:\path\to\Website-main>
 
 2. Install required packages:
