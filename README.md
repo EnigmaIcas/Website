@@ -10,45 +10,28 @@ Installation Steps:
 ------------------
 1. Make sure you are in Correct directory:
    >cd Website-main
-   >Eg  It should look like this : C:\path\to\Website-main>
+   >Eg  It should look like this: C:\path\to\Website-main>
 
 2. Install required packages:
    > pip install flask python-dotenv werkzeug
 
 Directory Structure:
 ------------------
-Website-main/
-├── static/
-│   ├── css/
-│   │   ├── home.css
-│   │   └── register.css
-│   ├── images/
-│   │   ├── logo.png
-│   │   ├── google-logo.png
-│   │   ├── apple-logo.png
-│   │   ├── division1.png
-│   │   ├── division2.png
-│   │   └── division3.png
-│   └── videos/
-│       └── bg-video.mp4
-├── templates/
-│   ├── home.html
-│   └── register.html
-├── main.py
-└── .env
+![image](https://github.com/user-attachments/assets/e75050a1-2fc4-4c83-8871-3d9bd044076f)
+
 
 Configuration:
 -------------
 1. Dont change .env Secret Key
 
-2. Verify all static files are in correct locations:
+2. Verify all static files are in the correct locations:
    - Images (.png, .jpg) → static/images/
    - Videos (.mp4) → static/videos/
    - CSS files → static/css/
 
 Running the Application:
 ----------------------
-1. Ensure your are in correct directory : C:\path\to\Website-main>
+1. Ensure you are in the correct directory: C:\path\to\Website-main>
 2. Run: python main.py
 3. Open browser: http://localhost:5000
 
