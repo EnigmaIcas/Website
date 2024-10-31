@@ -4,7 +4,7 @@ ENIGMA WEBSITE INSTALLATION GUIDE
 Prerequisites:
 -------------
 1. Python 3.x
-2. pip (Python package installer)
+2. *SQLite3*
 
 Installation Steps:
 ------------------
