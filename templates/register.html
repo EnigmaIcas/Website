@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create an Account</title>
+    <title>Enigma Account</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Lovers+Quarrel&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -12,55 +12,77 @@
     <div class="container">
         <div class="left-section">
             <div class="header">
-                <img src="lib/assets/logo.png" alt="Logo" class="logo-img">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
                 <h1 class="logo">ENIGMA</h1>
-                <a href="home.html" class="back-btn">
+                <a href="{{ url_for('home') }}" class="back-btn">
                     <i class="fas fa-arrow-left"></i> Back to website
                 </a>
             </div>
             <video autoplay muted loop class="background-video" id="backgroundVideo">
-                <source src="bg-video.mp4" type="video/mp4">
+                <source src="{{ url_for('static', filename='videos/bg-video.mp4') }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
 
         <div class="right-section">
             <div class="form-container">
-                <h2>Create an account</h2>
-                <p class="login-text">Already have an account? <a href="#">Log in</a></p>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
-                <form action="#">
-                    <div class="input-group">
-                        <input type="text" placeholder="First name" required>
-                        <input type="text" placeholder="Last name" required>
-                    </div>
-                    <input type="email" placeholder="Email" required>
-               
-                    <div class="spacing"></div>
-                    <input type="password" placeholder="Enter your password" required>
+                <!-- Registration Form -->
+                <div id="register-form" {% if show_login %}style="display: none;"{% endif %}>
+                    <h2>Create an account</h2>
+                    <p class="login-text">Already have an account? <a href="#" onclick="toggleForms(); return false;">Log in</a></p>
 
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="terms" required>
-                        <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
-                    </div>
+                    <form action="{{ url_for('register') }}" method="POST">
+                        <div class="input-group">
+                            <input type="text" name="first_name" placeholder="First name" required>
+                            <input type="text" name="last_name" placeholder="Last name" required>
+                        </div>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <div class="spacing"></div>
+                        <input type="password" name="password" placeholder="Enter your password" required>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
+                        </div>
+                        <div class="spacing"></div>
+                        <button type="submit" class="create-account-btn">Create account</button>
+                    </form>
+                </div>
 
-                    <div class="spacing"></div>
+                <!-- Login Form -->
+                <div id="login-form" {% if not show_login %}style="display: none;"{% endif %}>
+                    <h2>Welcome Back</h2>
+                    <p class="login-text">Don't have an account? <a href="#" onclick="toggleForms(); return false;">Register</a></p>
 
-                    <button type="submit" class="create-account-btn">Create account</button>
-                </form>
+                    <form action="{{ url_for('login') }}" method="POST">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <div class="spacing"></div>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <div class="spacing"></div>
+                        <button type="submit" class="create-account-btn">Login</button>
+                        <p class="forgot-password"><a href="#">Forgot password?</a></p>
+                    </form>
+                </div>
 
                 <div class="line-container">
                     <hr class="line">
-                    <p class="or-text">Or register with</p>
+                    <p class="or-text">Or continue with</p>
                     <hr class="line">
                 </div>
 
                 <div class="social-login">
                     <button class="google-btn">
-                        <img src="google-logo.png" alt="Google Logo" class="social-icon">Google
+                        <img src="{{ url_for('static', filename='images/google-logo.png') }}" alt="Google Logo" class="social-icon">Google
                     </button>
                     <button class="apple-btn">
-                        <img src="apple-logo.png" alt="Apple Logo" class="social-icon">Apple
+                        <img src="{{ url_for('static', filename='images/apple-logo.png') }}" alt="Apple Logo" class="social-icon">Apple
                     </button>
                 </div>
             </div>
@@ -70,6 +92,19 @@
     <script>
         const video = document.getElementById('backgroundVideo');
         video.playbackRate = 0.4;
+
+        function toggleForms() {
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+            
+            if (registerForm.style.display === 'none') {
+                registerForm.style.display = 'block';
+                loginForm.style.display = 'none';
+            } else {
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
