@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_here')
 
 # Database path
-DB_PATH = 'enigma.db'
+DB_PATH = os.path.join(os.path.dirname(__file__), 'enigma.db')
 
 # Database initialization function
 def init_db():
@@ -19,16 +19,24 @@ def init_db():
     cur = conn.cursor()
     
     # Create users table if it doesn't exist
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
+    cur.executescript('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS Divisions (
+        DivisionID INTEGER PRIMARY KEY AUTOINCREMENT,
+        DivisionName TEXT NOT NULL,
+        Building TEXT NOT NULL,
+        Room TEXT NOT NULL
+    );
+  
+''')
     
     conn.commit()
     conn.close()

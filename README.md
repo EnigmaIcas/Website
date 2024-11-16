@@ -15,6 +15,9 @@ Installation Steps:
 2. Install required packages:
    > pip install flask python-dotenv werkzeug
 
+3. Install an extension in your IDE to view the sql database<br>
+   Eg: SQLite Viewer
+
 Directory Structure:
 ------------------
 ![image](https://github.com/user-attachments/assets/e75050a1-2fc4-4c83-8871-3d9bd044076f)
