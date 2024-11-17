@@ -35,6 +35,16 @@ def init_db():
         Building TEXT NOT NULL,
         Room TEXT NOT NULL
     );
+
+
+    CREATE TABLE IF NOT EXISTS Universities (
+  UniversityID INTEGER PRIMARY KEY AUTOINCREMENT,
+  UniversityName VARCHAR(100),
+  Country VARCHAR(100),
+  City VARCHAR(100),
+  NoOfStudents INTEGER
+);
+
   
 ''')
     
