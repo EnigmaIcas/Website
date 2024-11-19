@@ -1,17 +1,25 @@
+# Flask stuff
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
+
+# Standard library
+from pathlib import Path
 import sqlite3
-import os
+
+# Enviroment stuff
 from dotenv import load_dotenv
+from os import getenv
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_here')
+app.secret_key = getenv('SECRET_KEY', 'your_secret_key_here')
 
 # Database path
-DB_PATH = os.path.join(os.path.dirname(__file__), 'enigma.db')
+# FIXME: os.path is outdated, use pathlib.Path instead.
+# os.path.join(os.path.dirname(__file__), 'enigma.db')
+DB_PATH = Path(__file__).parent / "enigma.db" 
 
 # Database initialization function
 def init_db():
@@ -38,27 +46,40 @@ def init_db():
 
 
     CREATE TABLE IF NOT EXISTS Universities (
-  UniversityID INTEGER PRIMARY KEY AUTOINCREMENT,
-  UniversityName VARCHAR(100),
-  Country VARCHAR(100),
-  City VARCHAR(100),
-  NoOfStudents INTEGER
-);
-
-  
-''')
+    UniversityID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UniversityName VARCHAR(100),
+    Country VARCHAR(100),
+    City VARCHAR(100),
+    NoOfStudents INTEGER
+    );
+    ''')
     
     conn.commit()
     conn.close()
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # This enables column access by name
+    conn.row_factory = sqlite3.Row  # This enables column access by name    
     return conn
+
+def get_division_names_from_db() -> list[str]:
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    cur.execute('SELECT DivisionName FROM Divisions;')
+    query_result = cur.fetchall()
+    return [
+        record[0] 
+        for record
+        in query_result
+    ]
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template(
+        'home.html', 
+        division_names=get_division_names_from_db()
+    )
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -86,10 +107,13 @@ def register():
         
         # Insert new user
         try:
-            cur.execute('''
+            cur.execute(
+                '''
                 INSERT INTO users (first_name, last_name, email, password)
                 VALUES (?, ?, ?, ?)
-            ''', (first_name, last_name, email, hashed_password))
+                ''', 
+                (first_name, last_name, email, hashed_password)
+            )
             
             db.commit()
             flash('Registration successful! Please login.', 'success')
