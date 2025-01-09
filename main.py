@@ -62,9 +62,24 @@ def get_db():
     conn.row_factory = sqlite3.Row  # This enables column access by name    
     return conn
 
+def get_division_names_from_db() -> list[str]:
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    cur.execute('SELECT DivisionName FROM Divisions;')
+    query_result = cur.fetchall()
+    return [
+        record[0] 
+        for record
+        in query_result
+    ]
+
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template(
+        'home.html', 
+        division_names=get_division_names_from_db()
+    )
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
