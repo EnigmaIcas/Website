@@ -62,23 +62,38 @@ def get_db():
     conn.row_factory = sqlite3.Row  # This enables column access by name    
     return conn
 
-def get_division_names_from_db() -> list[str]:
+def db_get_col_values(column_name: str, table_name: str) -> list[str]:
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
-    cur.execute('SELECT DivisionName FROM Divisions;')
+    cur.execute(f"SELECT {column_name} FROM {table_name};")
     query_result = cur.fetchall()
+
     return [
         record[0] 
         for record
         in query_result
     ]
 
+def db_get_division_names() -> list[str]:
+    return db_get_col_values("DivisionName", "Divisions")
+
+def db_get_university_names() -> list[str]:    
+    return db_get_col_values("UniversityName", "Universities")
+
+
 @app.route('/')
 def home():
     return render_template(
         'home.html', 
-        division_names=get_division_names_from_db()
+        division_names=db_get_division_names()
+    )
+
+@app.route('/universities')
+def universities():                                                                                           #i have also made changes here
+    return render_template(
+        'university.html',
+        university_names=db_get_university_names()
     )
 
 @app.route('/register', methods=['GET', 'POST'])
