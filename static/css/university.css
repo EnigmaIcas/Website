@@ -1,6 +1,6 @@
 /* General Styling */
 * {
-    background-color: #a2c0ce;
+    /*background-color: #a2c0ce;*/
     font-family: 'Roboto', sans-serif; /* Sleeker font */
     margin: 0;
     padding: 0;
@@ -16,6 +16,7 @@ body {
     color: #ffffff;
     display: flex;
     justify-content: center;
+    
     align-items: center;
     padding: 20px;
     padding: 20px;
@@ -30,6 +31,11 @@ body {
     text-transform: uppercase;
     text-align: center;
     font-family: 'Montserrat', sans-serif; /* New bold font */
+}
+
+#tlabel
+{
+    padding-top: 10px;
 }
 
 .dropdown {
@@ -73,9 +79,11 @@ body {
 }
 
 .section-title {
-    color: #12100f;
+    /*color: #12100f;*/
+    color: #4c5b66;
     font-weight: bold;
-    margin-left: 5em;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 10px;
     text-transform: uppercase;
 }
@@ -131,3 +139,8 @@ body {
     color: #666;
 }
 
+#td
+{
+    text-align: left;
+    align-content: flex-start;
+}
