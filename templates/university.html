@@ -5,88 +5,420 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/university.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+    var map;
+    var cities;
+
+    const bgcolor = 'black';
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("location").addEventListener("change", function() {
+            let selectedValue = this.value; 
+            console.log(selectedValue);
+        
+            fetch('/update', {  
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ country: selectedValue })  
+            })
+            .then(response => response.json())  
+            .then(data => {
+                document.getElementById("tlabel").innerHTML = "Total transfers: " + data.total;
+                barchartdata.labels = data.branches;
+                barchartdata.datasets[0].data = data.branches_count;
+
+                piedata.labels = data.university_name;
+                piedata.datasets[0].data = data.university_count;
+
+                linedata.labels = data.batches_name;
+                linedata.datasets[0].data = data.batches_count;
+
+                cities = data.city_coordinates
+
+                citybardata.labels = data.city_name;
+                citybardata.datasets[0].data = data.city_count
+
+                data.university_names.forEach(university => {
+                    const option = document.createElement("option");
+                    option.value = university;
+                    option.textContent = university;
+                    document.getElementById("university").appendChild(option);
+                });
+
+                populateTable(data.student_names, data.university_names, data.cgpa);
+
+                myBarChart.update();
+                piechart.update();
+                linechart.update();
+                citybar.update();
+
+                console.log(data);
+                console.log("Cities ",cities);
+
+                if (map) {
+                map.remove(); 
+                map = null; 
+                }
+
+                map = L.map('map').setView(data.country_coordinates, 4);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                
+                }).addTo(map);
+
+                for (const [cityName, coords] of Object.entries(data.city_coordinates)) {
+                L.marker(coords).addTo(map)
+                    .bindPopup(`<b>${cityName}</b>`);
+                }
+
+                
+            })
+            .catch(error => console.error('Error:', error));  
+        });
+
+        var citybardata = {
+            labels: [],
+            datasets: [{
+                label: '',
+                data: [10,20,30],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const citybaroptions = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    color: bgcolor,
+                    text: 'Cities Transferred to'
+                }
+            }
+        };
+
+
+        var barchartdata = {
+            labels: [],
+            datasets: [{
+                label: '',
+                data: [10,20,30],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const baroptions = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    color: bgcolor,
+                    text: 'Branches'
+                }
+            }
+        };
+
+        var piedata = {
+            labels: [],
+            datasets: [{
+                label: '',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 159, 64, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const pieoptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+            position: 'right', 
+            display: true, 
+            labels: {
+                color: bgcolor, 
+                font: {
+                    size: 10
+                    //weight: 'bold' 
+                },
+                padding: 10,
+                usePointStyle: false // Use point style for legend markers
+            }
+        },
+                title: {
+                    display: true,
+                    color: bgcolor,
+                    text: 'Universities Proportion'
+                },
+                
+                datalabels: {
+                    color: bgcolor, 
+                    font: {
+                        size: 10, 
+                        weight: 'bold' 
+                    },
+                    formatter: function(value, context) {
+                        return value; 
+                    }
+                }
+            }
+        };
+
+        var linedata = {
+            labels: ['Now', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
+            datasets: [
+            {
+                    label: '',
+                    data: [12, 19, 3, 5, 2, 3, 10],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                }
+            ]
+        };
+        
+        const lineoptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    color: bgcolor,
+                    text: 'Transfers per Year'
+                }
+            }
+        }
+    
+
+        
+        const coursecanvas = document.getElementById('coursebar').getContext('2d');
+        const piecanvas = document.getElementById('uni-pie').getContext('2d');
+        const linecanvas = document.getElementById('transfers-line').getContext('2d');
+        const citycanvas = document.getElementById('city-bar').getContext('2d');
+
+
+        
+
+
+        const myBarChart = new Chart(coursecanvas, {
+            type: 'bar',
+            data: barchartdata,
+            options: baroptions
+        });
+
+        const citybar = new Chart(citycanvas, {
+            type: 'bar',
+            data: citybardata,
+            options: citybaroptions
+        });
+
+        const piechart = new Chart(piecanvas, {
+            type: 'pie',
+            data: piedata,
+            options: pieoptions,
+            plugins: [ChartDataLabels]
+        });
+
+        const linechart = new Chart(linecanvas, {
+            type: 'line',
+            data: linedata,
+            options: lineoptions,
+        });
+
+    });
+
+
+function populateTable(students, universities, cgpa) {
+
+    const table = document.querySelector("table");
+
+    for (let i = 0; i < students.length; i++) {
+
+        const row = document.createElement("tr");
+
+        const studentCell = document.createElement("td");
+        studentCell.textContent = students[i];
+        row.appendChild(studentCell);
+
+        const universityCell = document.createElement("td");
+        universityCell.textContent = universities[i];
+        row.appendChild(universityCell);
+
+        const linkedinCell = document.createElement("td");
+        linkedinCell.innerHTML = ` <a href="https://www.linkedin.com/" target="_blank"><img src='static/images/linkedin.png' height="30px" width="30px"></image></a>`;
+        row.appendChild(linkedinCell);
+
+        const cgpaCell = document.createElement("td");
+        cgpaCell.textContent = cgpa[i];
+        row.appendChild(cgpaCell);
+
+        table.appendChild(row);
+    }
+}
+
+function hideElements() {
+    
+    const titles = document.getElementsByClassName("section-title");
+    const elements = document.getElementsByClassName("placeholder-img");
+    const graph = document.getElementsByClassName("graph");
+   
+    for (let i = 0; i < titles.length; i++) {
+        titles[i].style.display = "none";
+        elements[i].style.display = "none";
+        graph[i].style.display = "visible";
+    }
+}
+        </script>
+    
 </head>
+
+
 <body>
     
-    <!-- Header 1 -->
+    <!--
     <header class="header">
         <h1>Universities</h1>
     </header>
+-->
 
+    
     <!-- Header 2 -->
     <section class="header2">
         <div class="dropdown">
-            <p>Total transfers: 80           </p> 
+            <p id="tlabel">Total transfers: {{ total }} </p> 
             <div>
-                <label for="overview">University Overview:</label>
-                <select id="overview">
-                    <option>Overview</option>
+                <label for="University" style="margin-right: 10px;">University :</label>
+                <select id="university">
+
                 </select>
-                <label for="location">Location:</label>
-                <select id="location">
-                    <option value= "USA">USA</option>
-                    <option value="Australia" >Australia</option>
-                    <option value="Canada">Canada</option>
-                    <option value="Germany">Germany</option>
+                    
+                </select>
+                <label for="location" style="margin-left: 10px;">Location:</label>
+                <select id="location" style="margin-left: 5px;">
+                    {% for country in countries %}
+                     <option value= "{{ country }}">{{ country }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
     </section>
 
 
-    <!-- Content Sections -->
     <main class="content">
-        <div class="card">
-            <div class="section-title">Audience Spread</div>
-            <div class="placeholder-img">World Map</div>
+        <div class="card" style="padding: 0;">
+            <div id="map" style="border-radius: 10px;"></div>
         </div>
         <div class="card">
             <div class="section-title">Line Graph</div>
             <div class="placeholder-img">Line Graph (Transfers per Year)</div>
+            <canvas class="graph" id="uni-pie" height="100%" width="100%" style="display: none;"></canvas>
         </div>
     </main>
     
-\
         <main class="content">
         
         <div class="card">
             <div class="section-title">Bar Graph</div>
             <div class="placeholder-img">Bar Graph (Cities)</div>
+            <canvas class="graph" id = "city-bar" height="100%" width="100%" visible="none"></canvas>
         </div>
         <div class="card">
             <div class="section-title">Pie Chart</div>
-            <div class="placeholder-img">Pie Chart (Transfers Proportion)</div>
+            <div class="placeholder-img" id="pie">Pie Chart (Transfers Proportion)</div>
+            <canvas class="graph" id="transfers-line" height="100%" width="100%" visible="none"></canvas>
         </div>
         <div class="card">
-            <div class="section-title">Course Analysis</div>
-            <div class="placeholder-img">Bar Graph (Majors)</div>
+            <div class="section-title">Course Analysis
+            <div class="placeholder-img">Bar Graph (Majors)
+                <canvas class="graph" id="coursebar" height="100%" width="100%" visbile="none"></canvas>
+            </div>
         </div>
 
+    </main>
 
-        <div class="card">
-            <div class="section-title">Alumni List</div>
-            <hr>
-            <br>
+    <main class="content">
+        <!--<div class="section-title">Alumni List</div>-->
+        <div class="card" style="overflow: scroll;">
+            
             <table>
                 <tr>
                     <th>Name</th>
                     <th>University</th>
-                </tr>
-                <tr>
-                    <td>John Doe</td>
-                    <td>MIT</td>
-                </tr>
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>University of New South Wales</td>
-                </tr>
-                <tr>
-                    <td>Rith</td>
-                    <td>University of Florida</td>
+                    <th>LinkedIn</th>
+                    <th>CGPA</th>
                 </tr>
             </table>
         </div>
-
     </main>
 </body>
 </html>
