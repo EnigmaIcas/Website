@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <style>
+        .slideshow-container {
+            max-width: 1600px;
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .slide img {
+            width: 100%;
+            height:90%;
+            border-radius: 10px;
+        }
+
+        .fade {
+            animation: fadeEffect 1.5s;
+        }
+
+        @keyframes fadeEffect {
+            from {
+                opacity: 0.4;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Enigma Logo">
+                Enigma
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">About Icas</a></li>
+                <li><a href="#">Alumni</a></li>
+                <li><a href="{{ url_for('universities') }}">Universities</a></li>
+                <li><a href="{{ url_for('events') }}">Events</a></li>
+                <li><a href="#">GPA Calculator</a></li>
+            </ul>
+            <div class="buttons">
+                <a href="{{ url_for('register') }}" class="login-btn">Login</a>
+                <a href="#" class="get-started-btn">Get started</a>
+            </div>
+        </nav>
+    </header>
+    <br><br>
+    <div class="slideshow-container">
+        {% if events %}
+        {% for event in events %}
+        <div class="slide fade">
+            <img src="{{ url_for('static', filename='images/' + event['image']) }}" alt="{{ event['name'] }}">
+            <p>{{ event['name'] }}</p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No events to display.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000);
+        }
+        document.addEventListener("DOMContentLoaded", showSlides);
+    </script>
+</body>
+
+</html>
