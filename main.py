@@ -90,7 +90,13 @@ CREATE TABLE IF NOT EXISTS Student_University (
     FOREIGN KEY (batch_id) REFERENCES Batches(batch_id),
     PRIMARY KEY (student_id, university_id, batch_id)
 );   
-                    
+
+CREATE TABLE IF NOT EXISTS Events (
+    event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    image TEXT NOT NULL
+);
+    
                  
     ''')
     
@@ -99,6 +105,12 @@ CREATE TABLE IF NOT EXISTS Student_University (
 
 """
 Code to insert data into enigma.db
+
+INSERT INTO Events (event_id, name, image) VALUES
+(1, 'Reverb', 'rb1.jpg'),
+(2, 'Reverb', 'rb2.jpg'),
+(3, 'Sports Day', 'sd1.jpg'),
+(4, 'Sports Day', 'sd2.jpg');
 
 INSERT INTO Universities (UniversityName, Country, City, country_coordinates, city_coordinates) VALUES
 ('University at Illinois at Urbana Champaign', 'USA', 'Urbana-Champaign', '37.0902,-95.7129', '40.1106,-88.2073'),
@@ -310,6 +322,17 @@ def get_universities_from_db() -> list[str]:
         in query_result
     ]
 
+def get_events():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT name, image FROM Events")
+    events = cur.fetchall()
+    print("Events from DB:", events)
+    conn.close()
+    return events
+
+
 @app.route('/')
 def home():
     return render_template(
@@ -475,6 +498,11 @@ def universities():
     
 
     return render_template('university.html', countries=countries, total=total)
+
+@app.route('/events')
+def events():
+    event_data = get_events()
+    return render_template('events.html', events=event_data)
 
 if __name__ == '__main__':
     init_db()
