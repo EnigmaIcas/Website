@@ -476,12 +476,12 @@ def update_function():
     cur.execute('SELECT students.name, uni.UniversityName, students.cgpa FROM Universities uni INNER JOIN CountryDetails c on c.country_id = uni.country_id INNER JOIN Student_University su on su.university_id = uni.UniversityID INNER JOIN Students students on students.student_id = su.student_id WHERE c.country_name = ? ;', (selected_country,))
     student_data = cur.fetchall()
     student_names = [record[0] for record in student_data]
-    university_names = [record[1] for record in student_data]
+    student_university_names = [record[1] for record in student_data]
     cgpa = [record[2] for record in student_data]
 
     conn.close()
 
-    return jsonify({"total": total, "branches": branches_name, "branches_count" : branches_count, "university_name": university_name, "university_count": university_count, "batches_name" : batches, "batches_count" : batch_count, "country_coordinates": country_coordinates, "city_coordinates": city_coordinates, "city_name": city_names, "city_count" : city_count, "student_names": student_names, "university_names": university_names, "cgpa": cgpa})
+    return jsonify({"total": total, "branches": branches_name, "branches_count" : branches_count, "university_name": university_name, "university_count": university_count, "batches_name" : batches, "batches_count" : batch_count, "country_coordinates": country_coordinates, "city_coordinates": city_coordinates, "city_name": city_names, "city_count" : city_count, "student_names": student_names, "student_university_names": student_university_names, "cgpa": cgpa})
 
 countries = []
 
@@ -495,9 +495,13 @@ def universities():
     cur.execute('SELECT COUNT(c.country_name) FROM Universities uni INNER JOIN CountryDetails c on c.country_id = uni.country_id WHERE c.country_name = ? ;', ('USA',))
     total = cur.fetchall()[0][0]
     countries = [ record[0] for record in query_result ]
+
+    cur.execute('SELECT DISTINCT uni.UniversityName FROM Universities uni INNER JOIN Student_University su ON uni.UniversityID = su.university_id INNER JOIN CountryDetails c on c.country_id = uni.country_id  WHERE c.country_name = ? GROUP BY uni.UniversityName ;', (countries[0],))
+    universities = cur.fetchall()
+    universities = [ record[0] for record in universities ]
     
 
-    return render_template('university.html', countries=countries, total=total)
+    return render_template('university.html', countries=countries, total=total, universities=universities)
 
 @app.route('/events')
 def events():
